@@ -5,19 +5,23 @@ import 'package:flutter/material.dart';
 import 'board.dart';
 
 class BoardPainter extends CustomPainter {
+  static int pointsOffset = 30;
+
   final Board board;
+
   Paint backgroundPaint = Paint()
     ..color = Colors.grey
     ..strokeWidth = 4
     ..style = PaintingStyle.stroke;
 
-  Paint elementPaint = Paint()..style = PaintingStyle.fill;
+  Paint elementPaint = Paint()
+    ..style = PaintingStyle.fill;
 
   BoardPainter(this.board);
 
   @override
   void paint(Canvas canvas, Size size) {
-    var length = size.width;
+    var length = size.width - pointsOffset;
     var cellSize = length / Board.width;
 
     for (int i = 0; i < Board.width; i++) {
@@ -29,11 +33,46 @@ class BoardPainter extends CustomPainter {
           ),
           backgroundPaint,
         );
+
+        String whoWon;
+
+        if (board.whoWonRow(j) == OwnerType.PLAYER)
+          whoWon = "player";
+        else if(board.whoWonRow(j) == OwnerType.COMPUTER)
+          whoWon = "comp";
+        else
+          whoWon = "0";
+
+//        print('draw ${board.getPointsForColumn(j).toString()}');
+        _drawText(
+          canvas,
+          whoWon,
+          size.width - pointsOffset / 2,
+          j * cellSize + cellSize / 2 - 10,
+          Colors.grey,
+        );
       }
+
+      String whoWon;
+
+      if (board.whoWonColumn(i) == OwnerType.PLAYER)
+        whoWon = "player";
+      else if(board.whoWonColumn(i) == OwnerType.COMPUTER)
+        whoWon = "comp";
+      else
+        whoWon = "0";
+
+      _drawText(
+        canvas,
+        whoWon,
+        i * cellSize + cellSize / 2 - 10,
+        size.width - pointsOffset / 2,
+        Colors.grey,
+      );
     }
 
     board.list.forEach(
-      (cellItem) {
+          (cellItem) {
         if (cellItem.fieldType == FieldType.FIRE)
           elementPaint.color = Colors.red;
 
@@ -60,7 +99,7 @@ class BoardPainter extends CustomPainter {
         );
 
         var text = "";
-        if(cellItem.ownerType == OwnerType.PLAYER)
+        if (cellItem.ownerType == OwnerType.PLAYER)
           text = "player";
         else
           text = "computer";
@@ -70,16 +109,15 @@ class BoardPainter extends CustomPainter {
           text,
           x + size / 2 - 10,
           y + size + 15,
+          Colors.white,
         );
-
-
       },
     );
   }
 
-  void _drawText(Canvas canvas, String text, double x, double y) {
+  void _drawText(Canvas canvas, String text, double x, double y, Color color) {
     TextPainter tp = TextPainter(
-      text: TextSpan(style: TextStyle(color: Colors.white), text: text),
+      text: TextSpan(style: TextStyle(color: color), text: text),
       textAlign: TextAlign.left,
       textDirection: TextDirection.ltr,
     );

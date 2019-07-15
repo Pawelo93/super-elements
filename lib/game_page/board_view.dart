@@ -1,15 +1,14 @@
 import 'package:color_game/game_page/element_controller.dart';
-import 'package:color_game/model/states/field_type.dart';
 import 'package:color_game/model/states/game_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:color_game/game_page/game_presenter.dart';
 import 'board.dart';
 import 'board_painter.dart';
+import 'field_value_controller.dart';
 import 'view.dart';
 
 class BoardView extends StatefulWidget {
-
   final ElementController elementController;
 
   BoardView(this.elementController);
@@ -19,16 +18,20 @@ class BoardView extends StatefulWidget {
 }
 
 class _BoardViewState extends State<BoardView> implements View {
+  // moze przeniesc presenter do gamepage?
   GamePresenter gamePresenter;
+  FieldValueController fieldValueController = FieldValueController();
+  Board board;
 
   _BoardViewState(ElementController elementController) {
-    gamePresenter = GamePresenter(this, elementController);
+    board = Board(fieldValueController);
+    gamePresenter = GamePresenter(this, board, elementController);
   }
 
   @override
   Widget build(BuildContext context) {
 //    if (gamePresenter.gameState == GameState.GAME)
-      return _gameState();
+    return _gameState();
 //    else
 //      return _afterGameState();
   }
@@ -39,13 +42,13 @@ class _BoardViewState extends State<BoardView> implements View {
         var point = (context.findRenderObject() as RenderBox)
             .globalToLocal(details.globalPosition);
 
-        var size = (context.findRenderObject() as RenderBox).size.width;
+        var size = (context.findRenderObject() as RenderBox).size.width -
+            BoardPainter.pointsOffset;
         var cell = (size / Board.width);
 
         var x = ((point.dx - (point.dx % cell)) / cell).round();
         var y = ((point.dy - (point.dy % cell)) / cell).round();
 
-        print('Change state x: $x y: $y');
         gamePresenter.changeState(x, y);
       },
       child: CustomPaint(
@@ -93,6 +96,13 @@ class _BoardViewState extends State<BoardView> implements View {
         ),
       ],
     );
+  }
+
+  Widget _nextRound() {
+    if (gamePresenter.gameState == GameState.NEXT_ROUND)
+      return RaisedButton(
+        child: Text("Next round!"),
+      );
   }
 
   Widget _endGameState() {

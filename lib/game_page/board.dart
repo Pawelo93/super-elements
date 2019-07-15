@@ -4,27 +4,19 @@ import 'package:color_game/model/cell_item.dart';
 import 'package:color_game/model/states/field_type.dart';
 import 'package:color_game/model/states/owner_type.dart';
 
+import 'field_value_controller.dart';
+
 class Board {
   static final width = 4;
   static final size = width * width;
   List<CellItem> list;
   List<CellItem> done;
 
-  Board() {
-    this.list = List<CellItem>();
-    clear();
-  }
+  final FieldValueController fieldValueController;
 
-  final lines = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  Board(this.fieldValueController) {
+    this.list = List<CellItem>();
+  }
 
   bool set(int x, int y, FieldType fieldType, OwnerType ownerType) {
     if (!_containsCellItem(x, y)) {
@@ -43,15 +35,6 @@ class Board {
     return false;
   }
 
-//
-//  void setIdx(int idx, FieldType fieldState) {
-//    _list[idx] = fieldState;
-//  }
-//
-//  FieldState get(int x, int y) {
-//    return _list[_getIndex(x, y)];
-//  }
-//
   CellItem get(int x, int y) {
     for (final cellItem in list) {
       if (cellItem.x == x && cellItem.y == y) {
@@ -67,17 +50,13 @@ class Board {
     return list.length == Board.size;
   }
 
-  bool checkIfLineFinished() {
-
-  }
+  bool checkIfLineFinished() {}
 
   Point summary() {
-    for(int i = 0; i<Board.width; i++ ) {
-      for(int j = 0;j <Board.width; j++) {
+    for (int i = 0; i < Board.width; i++) {
+      for (int j = 0; j < Board.width; j++) {
         var cell = list[_getIndex(i, j)];
-        if(cell == null)
-          continue;
-
+        if (cell == null) continue;
 
 //        if(cell != null)
 
@@ -109,5 +88,65 @@ class Board {
 
   void clear() {
 //    list.map((index) => CellItem(0, 0, FieldType.EMPTY));
+  }
+
+  OwnerType whoWonColumn(int column) {
+    if (getPointsForColumn(column, OwnerType.PLAYER) == 0 &&
+        getPointsForColumn(column, OwnerType.COMPUTER) == 0)
+      return OwnerType.NO_OWNER;
+    else if (getPointsForColumn(column, OwnerType.PLAYER) >
+        getPointsForColumn(column, OwnerType.COMPUTER))
+      return OwnerType.PLAYER;
+    else
+      return OwnerType.COMPUTER;
+  }
+
+  int getPointsForColumn(int column, OwnerType ownerType) {
+    var points = 0;
+    var cellInColumn = 0;
+
+    for (final cellItem in list) {
+      if (cellItem.x == column) {
+        cellInColumn++;
+
+        var cellPoints = fieldValueController.getValue(cellItem.fieldType);
+        if (cellItem.ownerType == ownerType) points += cellPoints;
+      }
+    }
+
+    if (cellInColumn == Board.width)
+      return points;
+    else
+      return 0;
+  }
+
+  OwnerType whoWonRow(int row) {
+    if (getPointsForRow(row, OwnerType.PLAYER) == 0 &&
+        getPointsForRow(row, OwnerType.COMPUTER) == 0)
+      return OwnerType.NO_OWNER;
+    else if (getPointsForRow(row, OwnerType.PLAYER) >
+        getPointsForRow(row, OwnerType.COMPUTER))
+      return OwnerType.PLAYER;
+    else
+      return OwnerType.COMPUTER;
+  }
+
+  int getPointsForRow(int row, OwnerType ownerType) {
+    var points = 0;
+    var cellInRow = 0;
+
+    for (final cellItem in list) {
+      if (cellItem.y == row) {
+        cellInRow++;
+
+        var cellPoints = fieldValueController.getValue(cellItem.fieldType);
+        if (cellItem.ownerType == ownerType) points += cellPoints;
+      }
+    }
+
+    if (cellInRow == Board.width)
+      return points;
+    else
+      return 0;
   }
 }

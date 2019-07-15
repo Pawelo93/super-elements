@@ -10,26 +10,37 @@ import 'view.dart';
 
 class GamePresenter {
   final ElementController elementController;
-  final board = Board();
+  final board;
   final View view;
-  GameState gameState = GameState.GAME;
+  GameState gameState = GameState.ROUND_1;
 
-  GamePresenter(this.view, this.elementController);
+  GamePresenter(this.view, this.board, this.elementController);
 
   void changeState(int x, int y) {
-    if (gameState != GameState.GAME) return;
+    if (gameState != GameState.ROUND_1) return;
 
-    if(board.set(x, y, elementController.actualElement, OwnerType.PLAYER)) {
+    if (board.set(x, y, elementController.actualElement, OwnerType.PLAYER)) {
       view.updateView();
       _updateBoard();
+
+      // check if next round
+      if(board.isFull()) {
+        gameState = GameState.NEXT_ROUND;
+        _updateBoard();
+      }
+      if (isGame() && !board.isFull()) _computerMove();
     }
-    if (gameState == GameState.GAME && !board.isFull())
-      _computerMove();
+  }
+
+  bool isGame() {
+    return gameState == GameState.ROUND_1 ||
+        gameState == GameState.ROUND_2 ||
+        gameState == GameState.ROUND_3;
   }
 
   reset() {
     board.clear();
-    gameState = GameState.GAME;
+    gameState = GameState.ROUND_1;
 
     _updateBoard();
   }
@@ -46,14 +57,11 @@ class GamePresenter {
     }
 
     board.set(point.x, point.y, FieldType.WATER, OwnerType.COMPUTER);
-    print('computer adds x ${point.x} y ${point.y} ');
     _updateBoard();
   }
 
   void _updateBoard() {
-
 //    if()
-
 
 //    if (board.playerWon()) {
 //      gameState = GameState.PLAYER_WON;

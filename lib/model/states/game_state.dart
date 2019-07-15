@@ -1,5 +1,8 @@
 enum GameState {
-  GAME,
+  ROUND_1,
+  ROUND_2,
+  ROUND_3,
+  NEXT_ROUND,
   PLAYER_WON,
   COMPUTER_WON,
   DRAW,

@@ -25,13 +25,24 @@ class _GamePageState extends State<GamePage> {
       body: Column(
         children: <Widget>[
           SizedBox(
-            height: MediaQuery
-                .of(context)
-                .size
-                .width,
+            height: MediaQuery.of(context).size.width,
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: BoardView(elementController),
+            ),
+          ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                onPressed: null,
+                child: Text(
+                  "Next round!",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
           ),
           Row(
@@ -49,10 +60,9 @@ class _GamePageState extends State<GamePage> {
 
   Widget _fireButton() {
     return GestureDetector(
-      onTap: () =>
-          setState(() {
-            elementController.setFire();
-          }),
+      onTap: () => setState(() {
+        elementController.setFire();
+      }),
       child: SizedBox(
         width: 70,
         height: 70,
@@ -66,10 +76,9 @@ class _GamePageState extends State<GamePage> {
 
   Widget _waterButton() {
     return GestureDetector(
-      onTap: () =>
-          setState(() {
-            elementController.setWater();
-          }),
+      onTap: () => setState(() {
+        elementController.setWater();
+      }),
       child: SizedBox(
         width: 70,
         height: 70,
@@ -83,10 +92,9 @@ class _GamePageState extends State<GamePage> {
 
   Widget _airButton() {
     return GestureDetector(
-      onTap: () =>
-          setState(() {
-            elementController.setAir();
-          }),
+      onTap: () => setState(() {
+        elementController.setAir();
+      }),
       child: SizedBox(
         width: 70,
         height: 70,

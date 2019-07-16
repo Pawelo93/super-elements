@@ -10,7 +10,6 @@ class Board {
   static final width = 4;
   static final size = width * width;
   List<CellItem> list;
-  List<CellItem> done;
 
   final FieldValueController fieldValueController;
 
@@ -86,10 +85,6 @@ class Board {
 //    return false;
 //  }
 
-  void clear() {
-//    list.map((index) => CellItem(0, 0, FieldType.EMPTY));
-  }
-
   OwnerType whoWonColumn(int column) {
     if (getPointsForColumn(column, OwnerType.PLAYER) == 0 &&
         getPointsForColumn(column, OwnerType.COMPUTER) == 0)
@@ -148,5 +143,37 @@ class Board {
       return points;
     else
       return 0;
+  }
+
+  OwnerType getWinner() {
+    List<OwnerType> owners = List();
+    for (int i = 0; i < Board.width; i++) {
+      owners.add(whoWonRow(i));
+    }
+
+    for (int i = 0; i < Board.width; i++) {
+      owners.add(whoWonColumn(i));
+    }
+
+    var computerWins = 0;
+    var playerWins = 0;
+
+    for (final owner in owners) {
+      if (owner == OwnerType.PLAYER)
+        playerWins++;
+      else if (owner == OwnerType.COMPUTER)
+        computerWins++;
+    }
+
+    if (playerWins > computerWins)
+      return OwnerType.PLAYER;
+    else if (computerWins > playerWins)
+      return OwnerType.COMPUTER;
+    else
+      return OwnerType.NO_OWNER;
+  }
+
+  void clean() {
+    list.clear();
   }
 }

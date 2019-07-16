@@ -1,4 +1,3 @@
-import 'package:color_game/game_page/element_controller.dart';
 import 'package:color_game/model/states/game_state.dart';
 import 'package:flutter/material.dart';
 
@@ -6,34 +5,32 @@ import 'package:color_game/game_page/game_presenter.dart';
 import 'board.dart';
 import 'board_painter.dart';
 import 'field_value_controller.dart';
-import 'view.dart';
 
 class BoardView extends StatefulWidget {
-  final ElementController elementController;
+  final GamePresenter gamePresenter;
 
-  BoardView(this.elementController);
+  BoardView(this.gamePresenter);
 
   @override
-  _BoardViewState createState() => _BoardViewState(elementController);
+  _BoardViewState createState() => _BoardViewState(gamePresenter);
 }
 
-class _BoardViewState extends State<BoardView> implements View {
-  // moze przeniesc presenter do gamepage?
-  GamePresenter gamePresenter;
+class _BoardViewState extends State<BoardView> {
+  final GamePresenter gamePresenter;
   FieldValueController fieldValueController = FieldValueController();
-  Board board;
 
-  _BoardViewState(ElementController elementController) {
-    board = Board(fieldValueController);
-    gamePresenter = GamePresenter(this, board, elementController);
-  }
+  _BoardViewState(this.gamePresenter);
 
   @override
   Widget build(BuildContext context) {
-//    if (gamePresenter.gameState == GameState.GAME)
-    return _gameState();
-//    else
-//      return _afterGameState();
+    print('state');
+    if (gamePresenter.gameState == GameState.GAME ||
+        gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER ||
+        gamePresenter.gameState == GameState.NEXT_ROUND_WON_COMPUTER ||
+        gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
+      return _gameState();
+    else
+      return _afterGameState();
   }
 
   Widget _gameState() {
@@ -49,6 +46,10 @@ class _BoardViewState extends State<BoardView> implements View {
         var x = ((point.dx - (point.dx % cell)) / cell).round();
         var y = ((point.dy - (point.dy % cell)) / cell).round();
 
+        if(x > 3 || y > 3)
+          return;
+//        print('click on board game stat: ${gamePresenter.gameState}');
+        print('click x $x y $y');
         gamePresenter.changeState(x, y);
       },
       child: CustomPaint(
@@ -98,12 +99,12 @@ class _BoardViewState extends State<BoardView> implements View {
     );
   }
 
-  Widget _nextRound() {
-    if (gamePresenter.gameState == GameState.NEXT_ROUND)
-      return RaisedButton(
-        child: Text("Next round!"),
-      );
-  }
+//  Widget _nextRound() {
+//    if (gamePresenter.gameState == GameState.NEXT_ROUND)
+//      return RaisedButton(
+//        child: Text("Next round!"),
+//      );
+//  }
 
   Widget _endGameState() {
     var text = "";

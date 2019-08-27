@@ -3,21 +3,22 @@ import 'package:color_game/model/states/owner_type.dart';
 import 'package:flutter/material.dart';
 
 import 'board.dart';
+import 'dart:ui' as ui;
 
 class BoardPainter extends CustomPainter {
   static int pointsOffset = 30;
 
   final Board board;
+  final Map<String, ui.Image> images;
 
   Paint backgroundPaint = Paint()
     ..color = Colors.grey
     ..strokeWidth = 4
     ..style = PaintingStyle.stroke;
 
-  Paint elementPaint = Paint()
-    ..style = PaintingStyle.fill;
+  Paint elementPaint = Paint()..style = PaintingStyle.fill;
 
-  BoardPainter(this.board);
+  BoardPainter(this.board, this.images);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -26,7 +27,7 @@ class BoardPainter extends CustomPainter {
 
     for (int i = 0; i < Board.width; i++) {
       for (int j = 0; j < Board.width; j++) {
-        canvas.drawRect(
+       canvas.drawRect(
           Rect.fromPoints(
             Offset(i * cellSize + cellSize, j * cellSize),
             Offset(i * cellSize, j * cellSize + cellSize),
@@ -38,7 +39,7 @@ class BoardPainter extends CustomPainter {
 
         if (board.whoWonRow(j) == OwnerType.PLAYER)
           whoWon = "player";
-        else if(board.whoWonRow(j) == OwnerType.COMPUTER)
+        else if (board.whoWonRow(j) == OwnerType.COMPUTER)
           whoWon = "comp";
         else
           whoWon = "0";
@@ -57,7 +58,7 @@ class BoardPainter extends CustomPainter {
 
       if (board.whoWonColumn(i) == OwnerType.PLAYER)
         whoWon = "player";
-      else if(board.whoWonColumn(i) == OwnerType.COMPUTER)
+      else if (board.whoWonColumn(i) == OwnerType.COMPUTER)
         whoWon = "comp";
       else
         whoWon = "0";
@@ -72,7 +73,7 @@ class BoardPainter extends CustomPainter {
     }
 
     board.list.forEach(
-          (cellItem) {
+      (cellItem) {
         if (cellItem.fieldType == FieldType.FIRE)
           elementPaint.color = Colors.red;
 

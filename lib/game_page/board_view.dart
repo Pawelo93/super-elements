@@ -5,21 +5,24 @@ import 'package:color_game/game_page/game_presenter.dart';
 import 'board.dart';
 import 'board_painter.dart';
 import 'field_value_controller.dart';
+import 'dart:ui' as ui;
 
 class BoardView extends StatefulWidget {
   final GamePresenter gamePresenter;
+  final Map<String, ui.Image> images;
 
-  BoardView(this.gamePresenter);
+  BoardView(this.gamePresenter, this.images);
 
   @override
-  _BoardViewState createState() => _BoardViewState(gamePresenter);
+  _BoardViewState createState() => _BoardViewState(gamePresenter, images);
 }
 
 class _BoardViewState extends State<BoardView> {
   final GamePresenter gamePresenter;
+  final Map<String, ui.Image> images;
   FieldValueController fieldValueController = FieldValueController();
 
-  _BoardViewState(this.gamePresenter);
+  _BoardViewState(this.gamePresenter, this.images);
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +60,7 @@ class _BoardViewState extends State<BoardView> {
           MediaQuery.of(context).size.width,
           MediaQuery.of(context).size.height,
         ),
-        painter: BoardPainter(gamePresenter.board),
+        painter: BoardPainter(gamePresenter.board, images),
       ),
     );
   }

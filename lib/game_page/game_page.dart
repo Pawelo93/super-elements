@@ -1,16 +1,14 @@
 import 'package:color_game/game_page/view.dart';
 import 'package:color_game/model/states/field_type.dart';
 import 'package:color_game/model/states/game_state.dart';
+import 'package:color_game/utils/image_loader.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'board.dart';
 import 'board_view.dart';
 import 'element_controller.dart';
 import 'field_value_controller.dart';
 import 'game_presenter.dart';
-
-import 'dart:ui' as ui;
 
 class GamePage extends StatefulWidget {
   final String title;
@@ -52,8 +50,17 @@ class _GamePageState extends State<GamePage> implements View {
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: FutureBuilder(
-                future: _loadImages(),
-                builder: (context, data) => BoardView(gamePresenter, data.data),
+                future: ImageLoader().init([
+                  'comp.png',
+                  'ground.png',
+                  'player.png',
+                ]),
+                builder: (context, data) {
+                  if (data.data != null)
+                    return BoardView(gamePresenter, data.data);
+                  else
+                    return Container();
+                },
               ),
             ),
           ),
@@ -71,16 +78,16 @@ class _GamePageState extends State<GamePage> implements View {
     );
   }
 
-  Future<Map<String, ui.Image>> _loadImages() async {
-    String asset = 'assets/comp.png';
-    ByteData data = await rootBundle.load(asset);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
-    ui.FrameInfo fi = await codec.getNextFrame();
-    var map = Map<String, ui.Image>();
-    print('image ${fi.image}');
-    map['comp'] = fi.image;
-    return map;
-  }
+//  Future<Map<String, ui.Image>> _loadImages() async {
+//    String asset = 'assets/comp.png';
+//    ByteData data = await rootBundle.load(asset);
+//    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List());
+//    ui.FrameInfo fi = await codec.getNextFrame();
+//    var map = Map<String, ui.Image>();
+//    print('image ${fi.image}');
+//    map['comp'] = fi.image;
+//    return map;
+//  }
 
   Widget _fireButton() {
     return GestureDetector(

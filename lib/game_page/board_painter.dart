@@ -1,9 +1,8 @@
-import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/model/states/owner_type.dart';
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 import 'board.dart';
-import 'dart:ui' as ui;
 
 class BoardPainter extends CustomPainter {
   static int pointsOffset = 30;
@@ -25,95 +24,119 @@ class BoardPainter extends CustomPainter {
     var length = size.width - pointsOffset;
     var cellSize = length / Board.width;
 
+//    drawImage(canvas, images['player'], Offset(0.0, 0.0), 0.03);
+
+    Offset msize = Offset(cellSize / 0.8, cellSize);
     for (int i = 0; i < Board.width; i++) {
       for (int j = 0; j < Board.width; j++) {
-       canvas.drawRect(
-          Rect.fromPoints(
-            Offset(i * cellSize + cellSize, j * cellSize),
-            Offset(i * cellSize, j * cellSize + cellSize),
-          ),
-          backgroundPaint,
-        );
-
-        String whoWon;
-
-        if (board.whoWonRow(j) == OwnerType.PLAYER)
-          whoWon = "player";
-        else if (board.whoWonRow(j) == OwnerType.COMPUTER)
-          whoWon = "comp";
-        else
-          whoWon = "0";
-
-//        print('draw ${board.getPointsForColumn(j).toString()}');
-        _drawText(
-          canvas,
-          whoWon,
-          size.width - pointsOffset / 2,
-          j * cellSize + cellSize / 2 - 10,
-          Colors.grey,
-        );
+        drawImage(canvas, images['ground'], Offset(i * cellSize + i * 8, j * cellSize), msize);
       }
-
-      String whoWon;
-
-      if (board.whoWonColumn(i) == OwnerType.PLAYER)
-        whoWon = "player";
-      else if (board.whoWonColumn(i) == OwnerType.COMPUTER)
-        whoWon = "comp";
-      else
-        whoWon = "0";
-
-      _drawText(
-        canvas,
-        whoWon,
-        i * cellSize + cellSize / 2 - 10,
-        size.width - pointsOffset / 2,
-        Colors.grey,
-      );
     }
 
-    board.list.forEach(
-      (cellItem) {
-        if (cellItem.fieldType == FieldType.FIRE)
-          elementPaint.color = Colors.red;
+//    drawImage(canvas, images['ground'], Offset(0 * cellSize, 0 * cellSize), msize);
+//    drawImage(canvas, images['ground'], Offset(3 * cellSize, 3 * cellSize), msize);
 
-        if (cellItem.fieldType == FieldType.WATER)
-          elementPaint.color = Colors.blue;
+//    for (int i = 0; i < Board.width; i++) {
+//      for (int j = 0; j < Board.width; j++) {
+//       canvas.drawRect(
+//          Rect.fromPoints(
+//            Offset(i * cellSize + cellSize, j * cellSize),
+//            Offset(i * cellSize, j * cellSize + cellSize),
+//          ),
+//          backgroundPaint,
+//        );
+//
+//        String whoWon;
+//
+//        if (board.whoWonRow(j) == OwnerType.PLAYER)
+//          whoWon = "player";
+//        else if (board.whoWonRow(j) == OwnerType.COMPUTER)
+//          whoWon = "comp";
+//        else
+//          whoWon = "0";
+//
+////        print('draw ${board.getPointsForColumn(j).toString()}');
+//        _drawText(
+//          canvas,
+//          whoWon,
+//          size.width - pointsOffset / 2,
+//          j * cellSize + cellSize / 2 - 10,
+//          Colors.grey,
+//        );
+//      }
+//
+//      String whoWon;
+//
+//      if (board.whoWonColumn(i) == OwnerType.PLAYER)
+//        whoWon = "player";
+//      else if (board.whoWonColumn(i) == OwnerType.COMPUTER)
+//        whoWon = "comp";
+//      else
+//        whoWon = "0";
+//
+//      _drawText(
+//        canvas,
+//        whoWon,
+//        i * cellSize + cellSize / 2 - 10,
+//        size.width - pointsOffset / 2,
+//        Colors.grey,
+//      );
+//    }
+//
+//    board.list.forEach(
+//      (cellItem) {
+//        if (cellItem.fieldType == FieldType.FIRE)
+//          elementPaint.color = Colors.red;
+//
+//        if (cellItem.fieldType == FieldType.WATER)
+//          elementPaint.color = Colors.blue;
+//
+//        if (cellItem.fieldType == FieldType.AIR)
+//          elementPaint.color = Colors.cyanAccent;
+//
+//        if (cellItem.fieldType == FieldType.GROUND)
+//          elementPaint.color = Colors.grey;
+//
+//        var offset = 10;
+//        var x = cellItem.x.toDouble() * cellSize + offset / 2;
+//        var y = cellItem.y.toDouble() * cellSize + offset / 2;
+//        var size = (cellSize - offset) / 2;
+//
+//        canvas.drawRect(
+//          Rect.fromPoints(
+//            Offset(x, y),
+//            Offset(x + size * 2, y + size * 2),
+//          ),
+//          elementPaint,
+//        );
+//
+//        var text = "";
+//        if (cellItem.ownerType == OwnerType.PLAYER)
+//          text = "player";
+//        else
+//          text = "computer";
+//
+//        _drawText(
+//          canvas,
+//          text,
+//          x + size / 2 - 10,
+//          y + size + 15,
+//          Colors.white,
+//        );
+//      },
+//    );
+  }
 
-        if (cellItem.fieldType == FieldType.AIR)
-          elementPaint.color = Colors.cyanAccent;
-
-        if (cellItem.fieldType == FieldType.GROUND)
-          elementPaint.color = Colors.grey;
-
-        var offset = 10;
-        var x = cellItem.x.toDouble() * cellSize + offset / 2;
-        var y = cellItem.y.toDouble() * cellSize + offset / 2;
-        var size = (cellSize - offset) / 2;
-
-        canvas.drawRect(
-          Rect.fromPoints(
-            Offset(x, y),
-            Offset(x + size * 2, y + size * 2),
-          ),
-          elementPaint,
-        );
-
-        var text = "";
-        if (cellItem.ownerType == OwnerType.PLAYER)
-          text = "player";
-        else
-          text = "computer";
-
-        _drawText(
-          canvas,
-          text,
-          x + size / 2 - 10,
-          y + size + 15,
-          Colors.white,
-        );
-      },
-    );
+  void drawImage(Canvas canvas, ui.Image image, Offset start, Offset size) {
+    var width = image.width;
+    var height = image.height;
+    canvas.drawImageRect(
+        image,
+        Rect.fromPoints(
+            Offset(0.0, 0.0), Offset(width.toDouble(), height.toDouble())),
+        Rect.fromPoints(start, start + size),
+//        Rect.fromPoints(start, Offset(width * scale, height * scale)),
+        backgroundPaint);
   }
 
   void _drawText(Canvas canvas, String text, double x, double y, Color color) {

@@ -1,6 +1,5 @@
 import 'package:color_game/game_page/view.dart';
 import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/model/states/game_state.dart';
 import 'package:color_game/utils/image_loader.dart';
 import 'package:flutter/material.dart';
 
@@ -154,14 +153,14 @@ class _GamePageState extends State<GamePage> implements View {
   }
 
   Widget _nextRound() {
-    print('game state ${gamePresenter.gameState}');
-    if (gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER)
-      return _nextRoundButton("Player win!");
-    if (gamePresenter.gameState == GameState.NEXT_ROUND_WON_COMPUTER)
-      return _nextRoundButton("Computer win!");
-    if (gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
-      return _nextRoundButton("It is a draw!");
-    else
+//    print('game state ${gamePresenter.gameState}');
+//    if (gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER)
+//      return _nextRoundButton("Player win!");
+//    if (gamePresenter.gameState == GameState.NEXT_ROUND_WON_COMPUTER)
+//      return _nextRoundButton("Computer win!");
+//    if (gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
+//      return _nextRoundButton("It is a draw!");
+//    else
       return Container();
   }
 

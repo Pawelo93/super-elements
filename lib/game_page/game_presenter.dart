@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:color_game/game_page/element_controller.dart';
 import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/model/states/game_state.dart';
 import 'package:color_game/model/states/owner_type.dart';
 
 import 'board.dart';
@@ -12,7 +11,7 @@ class GamePresenter {
   final ElementController elementController;
   final board;
   final View view;
-  GameState gameState = GameState.GAME;
+//  GameState gameState = GameState.GAME;
 
   List<OwnerType> winners = List();
   var round = 1;
@@ -21,7 +20,7 @@ class GamePresenter {
   GamePresenter(this.view, this.board, this.elementController);
 
   void changeState(int x, int y) {
-    if (gameState != GameState.GAME) return;
+//    if (gameState != GameState.GAME) return;
 
     if (board.set(x, y, elementController.actualElement, OwnerType.PLAYER)) {
       view.updateView();
@@ -32,13 +31,13 @@ class GamePresenter {
       print('Board is full ${board.isFull()}');
       _checkIfWin();
 
-      if (gameState == GameState.GAME && !board.isFull()) _computerMove();
+//      if (gameState == GameState.GAME && !board.isFull()) _computerMove();
     }
   }
 
   reset() {
     board.clean();
-    gameState = GameState.GAME;
+//    gameState = GameState.GAME;
     round = 1;
     winners.clear();
 
@@ -101,11 +100,11 @@ class GamePresenter {
   void _checkIfNextRound() {
     var winner = board.getWinner();
     winners.add(winner);
-    if (winner == OwnerType.PLAYER) gameState = GameState.NEXT_ROUND_WON_PLAYER;
-    if (winner == OwnerType.COMPUTER)
-      gameState = GameState.NEXT_ROUND_WON_COMPUTER;
-    else if (winner == OwnerType.NO_OWNER)
-      gameState = GameState.NEXT_ROUND_DRAW;
+//    if (winner == OwnerType.PLAYER) gameState = GameState.NEXT_ROUND_WON_PLAYER;
+//    if (winner == OwnerType.COMPUTER)
+//      gameState = GameState.NEXT_ROUND_WON_COMPUTER;
+//    else if (winner == OwnerType.NO_OWNER)
+//      gameState = GameState.NEXT_ROUND_DRAW;
 
     _updateBoard();
   }
@@ -113,11 +112,11 @@ class GamePresenter {
   nextRound() {
     if (round < maxRounds) {
       view.updateView();
-      if (round == 1) {
-        gameState = GameState.GAME;
-      } else if (round == 2) {
-        gameState = GameState.GAME;
-      }
+//      if (round == 1) {
+//        gameState = GameState.GAME;
+//      } else if (round == 2) {
+//        gameState = GameState.GAME;
+//      }
 
       round++;
       board.clean();
@@ -125,12 +124,12 @@ class GamePresenter {
   }
 
   setWinnerState() {
-    if (findWinner() == OwnerType.COMPUTER)
-      gameState = GameState.COMPUTER_WON;
-    else if (findWinner() == OwnerType.PLAYER)
-      gameState = GameState.PLAYER_WON;
-    else
-      gameState = GameState.DRAW;
+//    if (findWinner() == OwnerType.COMPUTER)
+//      gameState = GameState.COMPUTER_WON;
+//    else if (findWinner() == OwnerType.PLAYER)
+//      gameState = GameState.PLAYER_WON;
+//    else
+//      gameState = GameState.DRAW;
   }
 
   OwnerType findWinner() {

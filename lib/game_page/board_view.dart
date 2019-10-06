@@ -1,4 +1,3 @@
-import 'package:color_game/model/states/game_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:color_game/game_page/game_presenter.dart';
@@ -26,13 +25,13 @@ class _BoardViewState extends State<BoardView> {
 
   @override
   Widget build(BuildContext context) {
-    print('state');
-    if (gamePresenter.gameState == GameState.GAME ||
-        gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER ||
-        gamePresenter.gameState == GameState.NEXT_ROUND_WON_COMPUTER ||
-        gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
-      return _gameState();
-    else
+//    print('state');
+//    if (gamePresenter.gameState == GameState.GAME ||
+//        gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER ||
+//        gamePresenter.gameState == GameState.NEXT_ROUND_WON_COMPUTER ||
+//        gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
+//      return _gameState();
+//    else
       return _afterGameState();
   }
 
@@ -110,18 +109,18 @@ class _BoardViewState extends State<BoardView> {
 //  }
 
   Widget _endGameState() {
-    var text = "";
-    if (gamePresenter.gameState == GameState.COMPUTER_WON)
-      text = "Computer won!";
-    if (gamePresenter.gameState == GameState.PLAYER_WON) text = "Player won!";
-    if (gamePresenter.gameState == GameState.DRAW) text = "Draw!";
-
-    if (text != "")
-      return Text(
-        text,
-        style: TextStyle(fontSize: 40),
-      );
-    else
+//    var text = "";
+//    if (gamePresenter.gameState == GameState.COMPUTER_WON)
+//      text = "Computer won!";
+//    if (gamePresenter.gameState == GameState.PLAYER_WON) text = "Player won!";
+//    if (gamePresenter.gameState == GameState.DRAW) text = "Draw!";
+//
+//    if (text != "")
+//      return Text(
+//        text,
+//        style: TextStyle(fontSize: 40),
+//      );
+//    else
       return Container();
   }
 

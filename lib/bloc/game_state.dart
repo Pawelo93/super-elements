@@ -10,11 +10,11 @@ enum Winner {
 abstract class GameState extends Equatable {
   final GameBoard gameBoard;
 
-  GameState(this.gameBoard);
+  GameState(this.gameBoard, [List props = const []]) : super([gameBoard]..addAll(props));
 }
 
 class EmptyBoard extends GameState {
-  EmptyBoard(GameBoard gameBoard) : super(gameBoard);
+  EmptyBoard() : super(GameBoard.empty());
 
   @override
   String toString() {
@@ -31,19 +31,19 @@ class WaitingForPlayerMove extends GameState {
   }
 }
 
-class ComputerMove extends GameState {
-  ComputerMove(GameBoard gameBoard) : super(gameBoard);
+class WaitingForComputerMove extends GameState {
+  WaitingForComputerMove(GameBoard gameBoard) : super(gameBoard);
 
   @override
   String toString() {
-    return 'ComputerMove{gameBoard: $gameBoard}';
+    return 'WaitingForComputerMove{gameBoard: $gameBoard}';
   }
 }
 
 class EndRound extends GameState {
   final Winner winner;
 
-  EndRound(GameBoard gameBoard, this.winner): super(gameBoard);
+  EndRound(GameBoard gameBoard, this.winner): super(gameBoard, [winner]);
 
   @override
   String toString() {
@@ -54,7 +54,7 @@ class EndRound extends GameState {
 class EndGame extends GameState {
   final Winner winner;
 
-  EndGame(GameBoard gameBoard, this.winner) : super(gameBoard);
+  EndGame(GameBoard gameBoard, this.winner) : super(gameBoard, [winner]);
 
   @override
   String toString() {

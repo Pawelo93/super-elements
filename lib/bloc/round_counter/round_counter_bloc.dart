@@ -9,9 +9,12 @@ class RoundCounterBloc extends Bloc<RoundCounterEvent, RoundCounterState> {
 
   @override
   Stream<RoundCounterState> mapEventToState(RoundCounterEvent event) async* {
-    print('Event $event');
+    var currentState = state;
     if(event is Setup) {
       yield Round(event.maxRounds, 1);
+    }
+    else if(event is NextRound && currentState is Round) {
+      yield Round(currentState.maxRounds, event.nextRound);
     }
   }
 }

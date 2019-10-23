@@ -14,8 +14,14 @@ main() {
     expect(bloc.state, Uninitialized());
   });
 
-  test('setup change state to Round with proper rounds', () {
+  test('Setup change state to Round with proper rounds', () {
     bloc.add(Setup(3));
-    expect(bloc.state, emitsInOrder([Uninitialized(), Round(3, 1)]));
+    expect(bloc.skip(1), emits(Round(3, 1)));
+  });
+
+  test('NextRound change state to Round with proper rounds', () {
+    bloc.add(Setup(2));
+    bloc.add(NextRound(2));
+    expect(bloc.skip(1), emitsInOrder([Round(2, 1), Round(2, 2)]));
   });
 }

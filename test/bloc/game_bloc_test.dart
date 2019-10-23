@@ -1,6 +1,6 @@
-import 'package:color_game/bloc/game_bloc.dart';
-import 'package:color_game/bloc/game_event.dart';
-import 'package:color_game/bloc/game_state.dart';
+import 'package:color_game/bloc/game/game_bloc.dart';
+import 'package:color_game/bloc/game/game_event.dart';
+import 'package:color_game/bloc/game/game_state.dart';
 import 'package:color_game/model/game_board.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -12,13 +12,13 @@ main() {
   });
 
   test('initial state is EmptyBoard', () {
-    expect(gameBloc.currentState, EmptyBoard());
+    expect(gameBloc.state, EmptyBoard());
   });
 
   test(
       'set WaitingForPlayerMove when StartGame with isPlayerStarting true arrive',
       () {
-    gameBloc.dispatch(
+    gameBloc.add(
       StartGame(isPlayerStaring: true),
     );
     expect(
@@ -33,7 +33,7 @@ main() {
   test(
       'change state to WaitingForComputerMove when StartGame with isPlayerStarting false arrive',
       () async {
-    gameBloc.dispatch(
+    gameBloc.add(
       StartGame(isPlayerStaring: false),
     );
     expect(

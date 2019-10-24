@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:color_game/model/states/field_type.dart';
+import 'package:color_game/model/field_type.dart';
 
 class FieldValueController {
-  Map<FieldType, int> values = Map();
+  Map<BoardFieldType, int> values = Map();
 
   FieldValueController() {
     Random random = Random();
@@ -26,25 +26,25 @@ class FieldValueController {
     else
       airValue = base - additionAir;
 
-    values[FieldType.FIRE] = base;
-    values[FieldType.WATER] = waterValue;
-    values[FieldType.AIR] = airValue;
-    values[FieldType.GROUND] = 4;
+    values[BoardFieldType.FIRE] = base;
+    values[BoardFieldType.WATER] = waterValue;
+    values[BoardFieldType.AIR] = airValue;
+    values[BoardFieldType.GROUND] = 4;
 
     print('Fire: ${base}, water: $waterValue, air: $airValue');
   }
 
-  int getValue(FieldType type) {
+  int getValue(BoardFieldType type) {
     switch (type) {
-      case FieldType.FIRE:
+      case BoardFieldType.FIRE:
         return values[type];
-      case FieldType.WATER:
+      case BoardFieldType.WATER:
         return values[type];
-      case FieldType.AIR:
+      case BoardFieldType.AIR:
         return values[type];
-      case FieldType.GROUND:
+      case BoardFieldType.GROUND:
         return values[type];
-      case FieldType.EMPTY:
+      case BoardFieldType.EMPTY:
         return 0;
     }
   }

@@ -1,4 +1,4 @@
-enum FieldType {
+enum BoardFieldType {
   EMPTY,
   FIRE,
   WATER,

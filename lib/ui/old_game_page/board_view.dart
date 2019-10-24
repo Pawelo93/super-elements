@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:color_game/game_page/game_presenter.dart';
 import 'board.dart';
 import 'board_painter.dart';
 import 'field_value_controller.dart';
 import 'dart:ui' as ui;
+
+import 'game_presenter.dart';
 
 class BoardView extends StatefulWidget {
   final GamePresenter gamePresenter;

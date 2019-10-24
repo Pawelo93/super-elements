@@ -1,5 +1,5 @@
-import 'package:color_game/game_page/view.dart';
-import 'package:color_game/model/states/field_type.dart';
+import 'package:color_game/model/field_type.dart';
+import 'package:color_game/ui/old_game_page/view.dart';
 import 'package:color_game/utils/image_loader.dart';
 import 'package:flutter/material.dart';
 
@@ -97,7 +97,7 @@ class _GamePageState extends State<GamePage> implements View {
         width: 70,
         height: 70,
         child: _fill(
-          elementController.actualElement != FieldType.FIRE,
+          elementController.actualElement != BoardFieldType.FIRE,
           Colors.red,
         ),
       ),
@@ -113,7 +113,7 @@ class _GamePageState extends State<GamePage> implements View {
         width: 70,
         height: 70,
         child: _fill(
-          elementController.actualElement != FieldType.WATER,
+          elementController.actualElement != BoardFieldType.WATER,
           Colors.blue,
         ),
       ),
@@ -129,7 +129,7 @@ class _GamePageState extends State<GamePage> implements View {
         width: 70,
         height: 70,
         child: _fill(
-          elementController.actualElement != FieldType.AIR,
+          elementController.actualElement != BoardFieldType.AIR,
           Colors.cyanAccent,
         ),
       ),

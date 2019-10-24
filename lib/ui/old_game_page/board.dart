@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:color_game/model/cell_item.dart';
-import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/model/states/owner_type.dart';
+import 'package:color_game/model/field_type.dart';
+import 'package:color_game/model/owner_type.dart';
 
 import 'field_value_controller.dart';
 
@@ -17,7 +17,7 @@ class Board {
     this.list = List<CellItem>();
   }
 
-  bool set(int x, int y, FieldType fieldType, OwnerType ownerType) {
+  bool set(int x, int y, BoardFieldType fieldType, OwnerType ownerType) {
     if (!_containsCellItem(x, y)) {
       list.add(CellItem(x, y, fieldType, ownerType));
       return true;

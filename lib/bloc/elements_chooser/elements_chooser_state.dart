@@ -1,4 +1,4 @@
-import 'package:color_game/model/states/field_type.dart';
+import 'package:color_game/model/field_type.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class ElementChooserState extends Equatable {
@@ -15,7 +15,7 @@ class Uninitialized extends ElementChooserState {
 }
 
 class Selected extends ElementChooserState {
-  final FieldType fieldType;
+  final BoardFieldType fieldType;
 
   Selected(this.fieldType) : super([fieldType]);
 

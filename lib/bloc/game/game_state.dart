@@ -40,6 +40,13 @@ class WaitingForComputerMove extends GameState {
   }
 }
 
+class InvalidMove extends GameState {
+  InvalidMove(GameBoard gameBoard) : super(gameBoard);
+
+  @override
+  String toString() => 'InvalidMove{gameBoard: $gameBoard}';
+}
+
 class EndRound extends GameState {
   final Winner winner;
 

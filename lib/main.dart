@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import 'game_page/game_page.dart';
+import 'ui/old_game_page/game_page.dart';
+
 
 void main() => runApp(MyApp());
 

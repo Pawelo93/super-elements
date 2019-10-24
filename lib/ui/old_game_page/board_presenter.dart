@@ -1,4 +1,6 @@
-import 'package:color_game/game_page/view.dart';
+
+
+import 'package:color_game/ui/old_game_page/view.dart';
 
 import 'board.dart';
 

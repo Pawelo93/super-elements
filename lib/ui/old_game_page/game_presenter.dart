@@ -1,10 +1,10 @@
 import 'dart:math';
 
-import 'package:color_game/game_page/element_controller.dart';
-import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/model/states/owner_type.dart';
+import 'package:color_game/model/field_type.dart';
+import 'package:color_game/model/owner_type.dart';
 
 import 'board.dart';
+import 'element_controller.dart';
 import 'view.dart';
 
 class GamePresenter {
@@ -53,18 +53,18 @@ class GamePresenter {
       var randomY = Random().nextInt(Board.width);
       var cell = board.get(randomX, randomY);
 
-      if (cell == null || cell.fieldType == FieldType.EMPTY)
+      if (cell == null || cell.fieldType == BoardFieldType.EMPTY)
         point = Point(randomX, randomY);
     }
 
-    FieldType element;
+    BoardFieldType element;
     var randomElement = Random().nextInt(3);
     if(randomElement == 0)
-      element = FieldType.FIRE;
+      element = BoardFieldType.FIRE;
     else if(randomElement == 1)
-      element = FieldType.WATER;
+      element = BoardFieldType.WATER;
     else if(randomElement == 2)
-      element = FieldType.AIR;
+      element = BoardFieldType.AIR;
 
     board.set(point.x, point.y, element, OwnerType.COMPUTER);
     _checkIfWin();

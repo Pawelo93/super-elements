@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import 'package:color_game/model/states/field_type.dart';
+import 'package:color_game/model/field_type.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -20,26 +18,27 @@ class StartGame extends GameEvent {
 }
 
 abstract class Move extends GameEvent {
-  final FieldType fieldType;
-  final Point point;
+  final BoardFieldType fieldType;
+  final int x;
+  final int y;
 
-  Move(this.fieldType, this.point);
+  Move(this.fieldType, this.x, this.y);
 }
 
 class PlayerMove extends Move {
-  PlayerMove(FieldType fieldType, Point point) : super(fieldType, point);
+  PlayerMove(BoardFieldType fieldType, int x, int y) : super(fieldType, x, y);
 
   @override
   String toString() {
-    return 'PlayerMove{fieldType: $fieldType, point: $point}';
+    return 'PlayerMove{fieldType: $fieldType, x: $x, y: $y}';
   }
 }
 
 class ComputerMove extends Move {
-  ComputerMove(FieldType fieldType, Point point) : super(fieldType, point);
+  ComputerMove(BoardFieldType fieldType, int x, int y) : super(fieldType, x, y);
 
   @override
   String toString() {
-    return 'ComputerMove{fieldType: $fieldType, point: $point}';
+    return 'ComputerMove{fieldType: $fieldType, x: $x, y: $y}';
   }
 }

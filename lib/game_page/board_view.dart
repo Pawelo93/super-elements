@@ -1,30 +1,80 @@
+import 'dart:math';
+
+import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
+import 'package:color_game/bloc/elements_chooser/elements_chooser_state.dart';
+import 'package:color_game/bloc/game/game_bloc.dart';
+import 'package:color_game/bloc/game/game_event.dart';
+import 'package:color_game/bloc/game/game_state.dart';
+import 'package:color_game/domain/mapper/element_chooser_position_to_field_type_mapper.dart';
+import 'package:color_game/model/states/field_type.dart';
 import 'package:flutter/material.dart';
 
 import 'package:color_game/game_page/game_presenter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'board.dart';
 import 'board_painter.dart';
 import 'field_value_controller.dart';
 import 'dart:ui' as ui;
 
 class BoardView extends StatefulWidget {
-  final GamePresenter gamePresenter;
   final Map<String, ui.Image> images;
 
-  BoardView(this.gamePresenter, this.images);
+  BoardView(this.images);
 
   @override
-  _BoardViewState createState() => _BoardViewState(gamePresenter, images);
+  _BoardViewState createState() => _BoardViewState(images);
 }
 
 class _BoardViewState extends State<BoardView> {
-  final GamePresenter gamePresenter;
+  final ElementChooserPositionToFieldTypeMapper
+      elementChooserPositionToFieldTypeMapper =
+      ElementChooserPositionToFieldTypeMapper();
   final Map<String, ui.Image> images;
   FieldValueController fieldValueController = FieldValueController();
 
-  _BoardViewState(this.gamePresenter, this.images);
+  _BoardViewState(this.images);
 
   @override
   Widget build(BuildContext context) {
+    final GameBloc gameBloc = BlocProvider.of<GameBloc>(context);
+    final ElementChooserBloc elementChooserBloc =
+        BlocProvider.of<ElementChooserBloc>(context);
+    return BlocBuilder<GameBloc, GameState>(
+      builder: (BuildContext context, GameState state) {
+        return GestureDetector(
+          onTapDown: (details) {
+            var point = (context.findRenderObject() as RenderBox)
+                .globalToLocal(details.globalPosition);
+
+            var size = (context.findRenderObject() as RenderBox).size.width -
+                BoardPainter.pointsOffset;
+            var cell = (size / Board.width);
+
+            var x = ((point.dx - (point.dx % cell)) / cell).round();
+            var y = ((point.dy - (point.dy % cell)) / cell).round();
+
+            print('Point dx ${point.dx}, point dy ${point.dy}, x $x y $y');
+            if (x > 3 || y > 3) return;
+//        print('click on board game stat: ${gamePresenter.gameState}');
+            print('click x $x y $y');
+//            gamePresenter.changeState(x, y);
+            var chooserState = elementChooserBloc.state;
+            if (chooserState is ElementSelectedState) {
+              FieldType type;
+
+              gameBloc.add(PlayerMove(type, Point(x, y)));
+            }
+          },
+          child: CustomPaint(
+            size: Size(
+              MediaQuery.of(context).size.width,
+              MediaQuery.of(context).size.height,
+            ),
+            painter: BoardPainter(state.gameBoard, images),
+          ),
+        );
+      },
+    );
 //    print('state');
 //    if (gamePresenter.gameState == GameState.GAME ||
 //        gamePresenter.gameState == GameState.NEXT_ROUND_WON_PLAYER ||
@@ -32,74 +82,46 @@ class _BoardViewState extends State<BoardView> {
 //        gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
 //      return _gameState();
 //    else
-      return _afterGameState();
+
+//      return _afterGameState();
   }
 
-  Widget _gameState() {
-    return GestureDetector(
-      onTapDown: (details) {
-        var point = (context.findRenderObject() as RenderBox)
-            .globalToLocal(details.globalPosition);
-
-        var size = (context.findRenderObject() as RenderBox).size.width -
-            BoardPainter.pointsOffset;
-        var cell = (size / Board.width);
-
-        var x = ((point.dx - (point.dx % cell)) / cell).round();
-        var y = ((point.dy - (point.dy % cell)) / cell).round();
-
-        if(x > 3 || y > 3)
-          return;
-//        print('click on board game stat: ${gamePresenter.gameState}');
-        print('click x $x y $y');
-        gamePresenter.changeState(x, y);
-      },
-      child: CustomPaint(
-        size: Size(
-          MediaQuery.of(context).size.width,
-          MediaQuery.of(context).size.height,
-        ),
-        painter: BoardPainter(gamePresenter.board, images),
-      ),
-    );
-  }
-
-  Widget _afterGameState() {
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        Opacity(
-          opacity: 0.3,
-          child: Container(
-            child: _gameState(),
-          ),
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _endGameState(),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: RaisedButton(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Play Again!",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                onPressed: () => gamePresenter.reset(),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+//  Widget _afterGameState() {
+//    return Stack(
+//      alignment: Alignment.center,
+//      children: <Widget>[
+//        Opacity(
+//          opacity: 0.3,
+//          child: Container(
+//            child: _gameState(),
+//          ),
+//        ),
+//        Column(
+//          mainAxisSize: MainAxisSize.min,
+//          children: <Widget>[
+//            _endGameState(),
+//            Padding(
+//              padding: const EdgeInsets.all(24.0),
+//              child: RaisedButton(
+//                color: Colors.blue,
+//                child: Padding(
+//                  padding: const EdgeInsets.all(8.0),
+//                  child: Text(
+//                    "Play Again!",
+//                    style: TextStyle(
+//                      fontSize: 20,
+//                      color: Colors.white,
+//                    ),
+//                  ),
+//                ),
+//                onPressed: () => gamePresenter.reset(),
+//              ),
+//            ),
+//          ],
+//        ),
+//      ],
+//    );
+//  }
 
 //  Widget _nextRound() {
 //    if (gamePresenter.gameState == GameState.NEXT_ROUND)
@@ -121,7 +143,7 @@ class _BoardViewState extends State<BoardView> {
 //        style: TextStyle(fontSize: 40),
 //      );
 //    else
-      return Container();
+    return Container();
   }
 
   @override

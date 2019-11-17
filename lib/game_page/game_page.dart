@@ -1,18 +1,27 @@
+import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
+import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
+import 'package:color_game/bloc/game/game_bloc.dart';
+import 'package:color_game/bloc/game/game_bloc.dart';
+import 'package:color_game/bloc/round_counter/round_counter_bloc.dart';
+import 'package:color_game/bloc/round_counter/round_counter_state.dart';
 import 'package:color_game/game_page/view.dart';
 import 'package:color_game/model/states/field_type.dart';
-import 'package:color_game/utils/image_loader.dart';
+import 'package:color_game/ui/elements_chooser.dart';
+import 'package:color_game/ui/round_counter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'board.dart';
 import 'board_view.dart';
 import 'element_controller.dart';
 import 'field_value_controller.dart';
 import 'game_presenter.dart';
+import 'dart:ui' as ui;
 
 class GamePage extends StatefulWidget {
-  final String title;
+  final Map<String, ui.Image> images;
 
-  GamePage(this.title);
+  const GamePage({Key key, this.images}) : super(key: key);
 
   @override
   _GamePageState createState() => _GamePageState();
@@ -31,48 +40,28 @@ class _GamePageState extends State<GamePage> implements View {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 16.0),
-            child: Text(
-              "${gamePresenter.round}/${gamePresenter.maxRounds}",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: FutureBuilder(
-                future: ImageLoader().init([
-                  'comp.png',
-                  'ground.png',
-                  'player.png',
-                ]),
-                builder: (context, data) {
-                  if (data.data != null)
-                    return BoardView(gamePresenter, data.data);
-                  else
-                    return Container();
-                },
-              ),
-            ),
-          ),
-          _nextRound(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<RoundCounterBloc>(
+          builder: (context) => RoundCounterBloc(),
+        ),
+        BlocProvider<GameBloc>(
+          builder: (context) => GameBloc(),
+        ),
+        BlocProvider<ElementChooserBloc>(
+          builder: (context) => ElementChooserBloc(),
+        ),
+      ],
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
             children: <Widget>[
-              _fireButton(),
-              _waterButton(),
-              _airButton(),
+              _roundCounter(),
+              _boardArea(),
+              ElementsChooser()
             ],
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
@@ -88,52 +77,22 @@ class _GamePageState extends State<GamePage> implements View {
 //    return map;
 //  }
 
-  Widget _fireButton() {
-    return GestureDetector(
-      onTap: () => setState(() {
-        elementController.setFire();
-      }),
-      child: SizedBox(
-        width: 70,
-        height: 70,
-        child: _fill(
-          elementController.actualElement != FieldType.FIRE,
-          Colors.red,
-        ),
-      ),
+  Widget _roundCounter() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16.0),
+      child: RoundCounter(),
     );
   }
 
-  Widget _waterButton() {
-    return GestureDetector(
-      onTap: () => setState(() {
-        elementController.setWater();
-      }),
-      child: SizedBox(
-        width: 70,
-        height: 70,
-        child: _fill(
-          elementController.actualElement != FieldType.WATER,
-          Colors.blue,
-        ),
+  Widget _boardArea() {
+    return SizedBox(
+      height: MediaQuery.of(context).size.width,
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: BoardView(widget.images),
       ),
     );
-  }
-
-  Widget _airButton() {
-    return GestureDetector(
-      onTap: () => setState(() {
-        elementController.setAir();
-      }),
-      child: SizedBox(
-        width: 70,
-        height: 70,
-        child: _fill(
-          elementController.actualElement != FieldType.AIR,
-          Colors.cyanAccent,
-        ),
-      ),
-    );
+//    _nextRound()
   }
 
   Widget _fill(bool filled, Color color) {
@@ -161,7 +120,7 @@ class _GamePageState extends State<GamePage> implements View {
 //    if (gamePresenter.gameState == GameState.NEXT_ROUND_DRAW)
 //      return _nextRoundButton("It is a draw!");
 //    else
-      return Container();
+    return Container();
   }
 
   Widget _nextRoundButton(String winner) {

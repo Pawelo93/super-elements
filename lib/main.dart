@@ -1,67 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'home_page.dart';
+import 'package:bloc/bloc.dart';
 
-import 'game_page/game_page.dart';
+class SimpleBlocDelegate extends BlocDelegate {
+  @override
+  void onEvent(Bloc bloc, Object event) {
+    super.onEvent(bloc, event);
+    print(event);
+  }
 
-void main() => runApp(MyApp());
+  @override
+  void onTransition(Bloc bloc, Transition transition) {
+    super.onTransition(bloc, transition);
+    print(transition);
+  }
+
+  @override
+  void onError(Bloc bloc, Object error, StackTrace stacktrace) {
+    super.onError(bloc, error, stacktrace);
+    print(error);
+  }
+}
+
+void main() {
+  SystemChrome.setEnabledSystemUIOverlays([]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+  BlocSupervisor.delegate = SimpleBlocDelegate();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final String title;
-
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ButtonTheme(
-              minWidth: 200,
-              height: 40,
-              child: RaisedButton(
-                child: Text(
-                  "New Game",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => GamePage(widget.title),
-                  ),
-                ),
-              ),
-            ),
-          ],
+      theme: ThemeData.light().copyWith(
+        tooltipTheme: TooltipThemeData(
+          decoration: BoxDecoration(
+            color: const Color(0xFF3e64ff),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          textStyle: TextStyle(
+            fontWeight: FontWeight.w900,
+            fontSize: 20.0,
+            letterSpacing: 1.0,
+            color: Colors.white,
+          ),
         ),
+        scaffoldBackgroundColor: Color(0xFF4225A0),
+        textTheme: Theme.of(context).textTheme.apply(fontFamily: 'AmaticSC'),
       ),
+      initialRoute: 'homePage',
+      title: 'Flutter Demo',
+      routes: {
+        'homePage': (context) => HomePage()
+      },
     );
   }
 }

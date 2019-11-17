@@ -1,8 +1,9 @@
-import 'package:color_game/bloc/elements_chooser/elements_chooser_event.dart';
-import 'package:color_game/bloc/elements_chooser/elements_chooser_state.dart';
-import 'package:bloc/bloc.dart';
 import 'package:color_game/domain/repositories/elements_repository.dart';
 import 'package:color_game/model/field_type.dart';
+import 'package:bloc/bloc.dart';
+
+import 'elements_chooser_event.dart';
+import 'elements_chooser_state.dart';
 
 class ElementChooserBloc extends Bloc<ElementChooserEvent, ElementChooserState>{
   final ElementsRepository elementsRepository;

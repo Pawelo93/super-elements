@@ -1,13 +1,14 @@
 import 'dart:ui' as ui;
 
+import 'package:color_game/model/game_board.dart';
 import 'package:flutter/material.dart';
 
 import 'board.dart';
 
 class BoardPainter extends CustomPainter {
-  static int pointsOffset = 30;
+  static int pointsOffset = 40;
 
-  final Board board;
+  final GameBoard board;
   final Map<String, ui.Image> images;
 
   Paint backgroundPaint = Paint()
@@ -21,15 +22,16 @@ class BoardPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    print('Size $size');
     var length = size.width - pointsOffset;
     var cellSize = length / Board.width;
 
 //    drawImage(canvas, images['player'], Offset(0.0, 0.0), 0.03);
 
-    Offset msize = Offset(cellSize / 0.8, cellSize);
+    Offset msize = Offset(cellSize, cellSize);
     for (int i = 0; i < Board.width; i++) {
       for (int j = 0; j < Board.width; j++) {
-        drawImage(canvas, images['ground'], Offset(i * cellSize + i * 8, j * cellSize), msize);
+        drawImage(canvas, images['ground'], Offset(i * cellSize, j * cellSize), msize);
       }
     }
 

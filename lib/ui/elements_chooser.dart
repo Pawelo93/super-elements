@@ -9,27 +9,27 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ElementsChooser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ElementChooserBloc bloc =
-        BlocProvider.of<ElementChooserBloc>(context);
+    final ElementChooserBloc bloc = BlocProvider.of<ElementChooserBloc>(context);
     return BlocBuilder<ElementChooserBloc, ElementChooserState>(
       builder: (context, ElementChooserState state) {
+        print('state $state');
         if (state is Selected) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               _button('Fire', state.fieldType == BoardFieldType.FIRE, Colors.red, () {
-                bloc.add(ChangeElement(1));
+                bloc.add(ChangeElement(0));
               }),
               _button('Water', state.fieldType == BoardFieldType.WATER, Colors.blue, () {
-                bloc.add(ChangeElement(2));
+                bloc.add(ChangeElement(1));
               }),
               _button('Air', state.fieldType == BoardFieldType.AIR, Colors.cyanAccent, () {
-                bloc.add(ChangeElement(3));
+                bloc.add(ChangeElement(2));
               }),
             ],
           );
         } else
-          return Container();
+          return Text('Not selected');
       },
     );
   }

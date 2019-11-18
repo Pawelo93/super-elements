@@ -1,22 +1,24 @@
+import 'dart:ui' as ui;
+
 import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
-import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
-import 'package:color_game/bloc/game/game_bloc.dart';
 import 'package:color_game/bloc/game/game_bloc.dart';
 import 'package:color_game/bloc/round_counter/round_counter_bloc.dart';
-import 'package:color_game/bloc/round_counter/round_counter_state.dart';
-import 'package:color_game/game_page/view.dart';
-import 'package:color_game/model/states/field_type.dart';
+import 'package:color_game/domain/repositories/board_repository.dart';
+import 'package:color_game/domain/repositories/elements_repository.dart';
+import 'package:color_game/domain/winner_provider/winner_provider_impl.dart';
+import 'package:color_game/repositories/board_repository_impl.dart';
+import 'package:color_game/repositories/elements_repository_impl.dart';
 import 'package:color_game/ui/elements_chooser.dart';
+import 'package:color_game/ui/old_game_page/board.dart';
+import 'package:color_game/ui/old_game_page/element_controller.dart';
+import 'package:color_game/ui/old_game_page/field_value_controller.dart';
+import 'package:color_game/ui/old_game_page/game_presenter.dart';
+import 'package:color_game/ui/old_game_page/view.dart';
 import 'package:color_game/ui/round_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'board.dart';
 import 'board_view.dart';
-import 'element_controller.dart';
-import 'field_value_controller.dart';
-import 'game_presenter.dart';
-import 'dart:ui' as ui;
 
 class GamePage extends StatefulWidget {
   final Map<String, ui.Image> images;
@@ -40,16 +42,20 @@ class _GamePageState extends State<GamePage> implements View {
 
   @override
   Widget build(BuildContext context) {
+    final BoardRepository boardRepository = BoardRepositoryImpl();
+    final ElementsRepository elementsRepository = ElementsRepositoryImpl();
+    final WinnerProviderImpl winnerProvider =
+        WinnerProviderImpl(elementsRepository);
     return MultiBlocProvider(
       providers: [
         BlocProvider<RoundCounterBloc>(
           builder: (context) => RoundCounterBloc(),
         ),
         BlocProvider<GameBloc>(
-          builder: (context) => GameBloc(),
+          builder: (context) => GameBloc(boardRepository, winnerProvider),
         ),
         BlocProvider<ElementChooserBloc>(
-          builder: (context) => ElementChooserBloc(),
+          builder: (context) => ElementChooserBloc(elementsRepository),
         ),
       ],
       child: Scaffold(
@@ -58,7 +64,7 @@ class _GamePageState extends State<GamePage> implements View {
             children: <Widget>[
               _roundCounter(),
               _boardArea(),
-              ElementsChooser()
+              ElementsChooser(),
             ],
           ),
         ),

@@ -6,7 +6,7 @@ class GameBoard {
   final width = 4;
   final size = 16;
 
-  final BuiltList list;
+  final BuiltList<CellItem> list;
 
   GameBoard(this.list);
 

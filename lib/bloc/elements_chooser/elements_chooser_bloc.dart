@@ -11,7 +11,7 @@ class ElementChooserBloc extends Bloc<ElementChooserEvent, ElementChooserState>{
   ElementChooserBloc(this.elementsRepository);
 
   @override
-  ElementChooserState get initialState => Uninitialized();
+  ElementChooserState get initialState => Selected(BoardFieldType.FIRE);
 
   @override
   Stream<ElementChooserState> mapEventToState(ElementChooserEvent event) async* {

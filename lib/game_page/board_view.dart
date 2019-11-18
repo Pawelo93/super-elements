@@ -6,17 +6,12 @@ import 'package:color_game/bloc/game/game_bloc.dart';
 import 'package:color_game/bloc/game/game_event.dart';
 import 'package:color_game/bloc/game/game_state.dart';
 import 'package:color_game/domain/mapper/element_chooser_position_to_field_type_mapper.dart';
-import 'package:color_game/model/states/field_type.dart';
 import 'package:color_game/ui/old_game_page/board.dart';
 import 'package:color_game/ui/old_game_page/board_painter.dart';
 import 'package:color_game/ui/old_game_page/field_value_controller.dart';
 import 'package:flutter/material.dart';
 
-import 'package:color_game/game_page/game_presenter.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'board.dart';
-import 'board_painter.dart';
-import 'field_value_controller.dart';
 import 'dart:ui' as ui;
 
 class BoardView extends StatefulWidget {
@@ -63,7 +58,9 @@ class _BoardViewState extends State<BoardView> {
 //            gamePresenter.changeState(x, y);
             var chooserState = elementChooserBloc.state;
 
-            gameBloc.add(PlayerMove(type, Point(x, y)));
+            if(chooserState is Selected) {
+              gameBloc.add(PlayerMove(chooserState.fieldType, x, y));
+            }
           },
           child: CustomPaint(
             size: Size(

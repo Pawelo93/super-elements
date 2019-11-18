@@ -8,7 +8,7 @@ main() {
   GameBloc gameBloc;
 
   setUp(() {
-    gameBloc = GameBloc();
+//    gameBloc = GameBloc();
   });
 
   test('initial state is EmptyBoard', () {

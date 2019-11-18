@@ -1,6 +1,3 @@
-import 'package:color_game/game_page/board.dart';
-import 'package:color_game/model/field_type.dart';
-import 'package:color_game/model/states/owner_type.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class BoardTest {
@@ -17,7 +14,7 @@ class BoardTest {
     });
   }
 
-  void addToBoard(Board board, int x, int y) {
-    board.set(x, y, BoardFieldType.FIRE, OwnerType.PLAYER);
-  }
+//  void addToBoard(GameBoard board, int x, int y) {
+//    board.set(x, y, BoardFieldType.FIRE, OwnerType.PLAYER);
+//  }
 }

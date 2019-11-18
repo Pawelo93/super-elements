@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'board.dart';
 
 class BoardPainter extends CustomPainter {
-  static int pointsOffset = 40;
+  static int pointsOffset = 0;
 
   final GameBoard board;
   final Map<String, ui.Image> images;

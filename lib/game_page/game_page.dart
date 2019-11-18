@@ -95,7 +95,7 @@ class _GamePageState extends State<GamePage> implements View {
       height: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: BoardView(widget.images),
+        child: Container(color: Colors.blue, child: BoardView(widget.images)),
       ),
     );
 //    _nextRound()

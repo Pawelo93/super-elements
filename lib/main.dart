@@ -24,11 +24,11 @@ class SimpleBlocDelegate extends BlocDelegate {
 }
 
 void main() {
-  SystemChrome.setEnabledSystemUIOverlays([]);
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+//  SystemChrome.setEnabledSystemUIOverlays([]);
+//  SystemChrome.setPreferredOrientations([
+//    DeviceOrientation.portraitUp,
+//    DeviceOrientation.portraitDown,
+//  ]);
   BlocSupervisor.delegate = SimpleBlocDelegate();
   runApp(MyApp());
 }

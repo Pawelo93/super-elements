@@ -1,11 +1,13 @@
 import 'dart:ui' as ui;
 
+import 'package:color_game/bloc/board/board_bloc.dart';
 import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
-import 'package:color_game/bloc/game/game_bloc.dart';
 import 'package:color_game/bloc/round_counter/round_counter_bloc.dart';
+import 'package:color_game/computerAI/computer_player.dart';
 import 'package:color_game/domain/repositories/board_repository.dart';
 import 'package:color_game/domain/repositories/elements_repository.dart';
 import 'package:color_game/domain/winner_provider/winner_provider_impl.dart';
+import 'package:color_game/game_manager.dart';
 import 'package:color_game/repositories/board_repository_impl.dart';
 import 'package:color_game/repositories/elements_repository_impl.dart';
 import 'package:color_game/ui/elements_chooser.dart';
@@ -42,28 +44,35 @@ class _GamePageState extends State<GamePage> implements View {
 
   @override
   Widget build(BuildContext context) {
+
     final BoardRepository boardRepository = BoardRepositoryImpl();
     final ElementsRepository elementsRepository = ElementsRepositoryImpl();
-    final WinnerProviderImpl winnerProvider =
-        WinnerProviderImpl(elementsRepository);
+    final WinnerProviderImpl winnerProvider = WinnerProviderImpl(elementsRepository);
+    final secondPlayer = ComputerPlayer();
+    final RoundCounterBloc roundCounterBloc = RoundCounterBloc();
+    final ElementChooserBloc elementChooserBloc = ElementChooserBloc(elementsRepository);
+    final BoardBloc boardBloc = BoardBloc(boardRepository, winnerProvider, secondPlayer, roundCounterBloc);
+    final GameManager gameManager = GameManager(boardBloc, roundCounterBloc, elementChooserBloc, boardRepository);
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<RoundCounterBloc>(
-          builder: (context) => RoundCounterBloc(),
+          builder: (context) => roundCounterBloc,
         ),
-        BlocProvider<GameBloc>(
-          builder: (context) => GameBloc(boardRepository, winnerProvider),
+        BlocProvider<BoardBloc>(
+          builder: (context) => boardBloc,
         ),
         BlocProvider<ElementChooserBloc>(
-          builder: (context) => ElementChooserBloc(elementsRepository),
+          builder: (context) => elementChooserBloc,
         ),
       ],
       child: Scaffold(
+        backgroundColor: Colors.white30,
         body: SafeArea(
           child: Column(
             children: <Widget>[
               _roundCounter(),
-              _boardArea(),
+              _boardArea(gameManager),
               ElementsChooser(),
             ],
           ),
@@ -90,12 +99,12 @@ class _GamePageState extends State<GamePage> implements View {
     );
   }
 
-  Widget _boardArea() {
+  Widget _boardArea(GameManager gameManager) {
     return SizedBox(
       height: MediaQuery.of(context).size.width,
       child: Padding(
         padding: const EdgeInsets.all(32.0),
-        child: Container(color: Colors.blue, child: BoardView(widget.images)),
+        child: BoardView(gameManager, widget.images),
       ),
     );
 //    _nextRound()

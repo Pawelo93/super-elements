@@ -10,7 +10,7 @@ class ElementsRepositoryImpl implements ElementsRepository{
     values[BoardFieldType.AIR] = 3;
     values[BoardFieldType.GROUND] = 4;
 
-    print('Fire: ${1}, water: ${2}, air: ${3}');
+//    print('Fire: ${1}, water: ${2}, air: ${3}');
   }
 
   @override

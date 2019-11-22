@@ -2,11 +2,11 @@ import 'package:color_game/model/field_type.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
-abstract class GameEvent extends Equatable {
+abstract class BoardEvent extends Equatable {
 
 }
 
-class StartGame extends GameEvent {
+class StartGame extends BoardEvent {
   final isPlayerStaring;
 
   StartGame({@required this.isPlayerStaring});
@@ -17,7 +17,7 @@ class StartGame extends GameEvent {
   }
 }
 
-abstract class Move extends GameEvent {
+abstract class Move extends BoardEvent {
   final BoardFieldType fieldType;
   final int x;
   final int y;

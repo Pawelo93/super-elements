@@ -8,4 +8,9 @@ class CellItem {
   final OwnerType ownerType;
 
   CellItem(this.x, this.y, this.fieldType, this.ownerType);
+
+  @override
+  String toString() {
+    return "CellItem {x: $x, y: $y, fieldType: $fieldType, ownerType $ownerType}";
+  }
 }

@@ -1,6 +1,12 @@
-import '../../bloc/game/game_state.dart';
-import '../../model/game_board.dart';
+import 'package:color_game/bloc/board/board_state.dart';
+
+import '../../model/game_board_impl.dart';
 
 abstract class WinnerProvider {
-  Winner provide(GameBoard gameBoard);
+
+  Winner boardWinner(GameBoardImpl gameBoard);
+
+  Winner gameWinner();
+
+  void clear();
 }

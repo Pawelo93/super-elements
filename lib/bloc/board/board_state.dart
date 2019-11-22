@@ -1,4 +1,5 @@
 import 'package:color_game/model/game_board.dart';
+import 'package:color_game/model/game_board_impl.dart';
 import 'package:equatable/equatable.dart';
 
 enum Winner {
@@ -7,14 +8,14 @@ enum Winner {
   DRAW,
 }
 
-abstract class GameState extends Equatable {
+abstract class BoardState extends Equatable {
   final GameBoard gameBoard;
 
-  GameState(this.gameBoard, [List props = const []]) : super([gameBoard]..addAll(props));
+  BoardState(this.gameBoard, [List props = const []]) : super([gameBoard]..addAll(props));
 }
 
-class EmptyBoard extends GameState {
-  EmptyBoard() : super(GameBoard.empty());
+class EmptyBoard extends BoardState {
+  EmptyBoard() : super(GameBoardImpl.empty());
 
   @override
   String toString() {
@@ -22,7 +23,7 @@ class EmptyBoard extends GameState {
   }
 }
 
-class WaitingForPlayerMove extends GameState {
+class WaitingForPlayerMove extends BoardState {
   WaitingForPlayerMove(GameBoard gameBoard) : super(gameBoard);
 
   @override
@@ -31,7 +32,7 @@ class WaitingForPlayerMove extends GameState {
   }
 }
 
-class WaitingForComputerMove extends GameState {
+class WaitingForComputerMove extends BoardState {
   WaitingForComputerMove(GameBoard gameBoard) : super(gameBoard);
 
   @override
@@ -40,14 +41,14 @@ class WaitingForComputerMove extends GameState {
   }
 }
 
-class InvalidMove extends GameState {
+class InvalidMove extends BoardState {
   InvalidMove(GameBoard gameBoard) : super(gameBoard);
 
   @override
   String toString() => 'InvalidMove{gameBoard: $gameBoard}';
 }
 
-class EndRound extends GameState {
+class EndRound extends BoardState {
   final Winner winner;
 
   EndRound(GameBoard gameBoard, this.winner): super(gameBoard, [winner]);
@@ -58,7 +59,7 @@ class EndRound extends GameState {
   }
 }
 
-class EndGame extends GameState {
+class EndGame extends BoardState {
   final Winner winner;
 
   EndGame(GameBoard gameBoard, this.winner) : super(gameBoard, [winner]);

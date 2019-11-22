@@ -1,11 +1,11 @@
-import 'package:color_game/bloc/game/game_bloc.dart';
-import 'package:color_game/bloc/game/game_event.dart';
-import 'package:color_game/bloc/game/game_state.dart';
-import 'package:color_game/model/game_board.dart';
+import 'package:color_game/bloc/game/board_bloc.dart';
+import 'package:color_game/bloc/game/board_event.dart';
+import 'package:color_game/bloc/game/board_state.dart';
+import 'package:color_game/model/game_board_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 main() {
-  GameBloc gameBloc;
+  BoardBloc gameBloc;
 
   setUp(() {
 //    gameBloc = GameBloc();
@@ -25,7 +25,7 @@ main() {
       gameBloc.state,
       emitsInOrder([
         EmptyBoard(),
-        WaitingForPlayerMove(GameBoard.empty()),
+        WaitingForPlayerMove(GameBoardImpl.empty()),
       ]),
     );
   });
@@ -40,7 +40,7 @@ main() {
       gameBloc.state,
       emitsInOrder([
         EmptyBoard(),
-        WaitingForComputerMove(GameBoard.empty()),
+        WaitingForComputerMove(GameBoardImpl.empty()),
       ]),
     );
   });

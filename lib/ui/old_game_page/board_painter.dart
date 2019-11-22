@@ -1,6 +1,8 @@
 import 'dart:ui' as ui;
 
+import 'package:color_game/model/field_type.dart';
 import 'package:color_game/model/game_board.dart';
+import 'package:color_game/model/game_board_impl.dart';
 import 'package:flutter/material.dart';
 
 import 'board.dart';
@@ -11,6 +13,11 @@ class BoardPainter extends CustomPainter {
   final GameBoard board;
   final Map<String, ui.Image> images;
 
+  ui.Image groundTile;
+  ui.Image fireTile;
+  ui.Image waterTile;
+  ui.Image airTile;
+
   Paint backgroundPaint = Paint()
     ..color = Colors.grey
     ..strokeWidth = 4
@@ -18,20 +25,37 @@ class BoardPainter extends CustomPainter {
 
   Paint elementPaint = Paint()..style = PaintingStyle.fill;
 
-  BoardPainter(this.board, this.images);
+  BoardPainter(this.board, this.images) {
+    groundTile = images['ground'];
+    fireTile = images['fire_tile'];
+    waterTile = images['water_tile'];
+    airTile = images['air_tile'];
+  }
 
   @override
   void paint(Canvas canvas, Size size) {
-    print('Size $size');
+//    print('Size $size');
     var length = size.width - pointsOffset;
     var cellSize = length / Board.width;
 
 //    drawImage(canvas, images['player'], Offset(0.0, 0.0), 0.03);
 
+    print('Board!!! $board');
     Offset msize = Offset(cellSize, cellSize);
     for (int i = 0; i < Board.width; i++) {
       for (int j = 0; j < Board.width; j++) {
-        drawImage(canvas, images['ground'], Offset(i * cellSize, j * cellSize), msize);
+        ui.Image uiTile;
+        if (board.get(i, j) != null) {
+          if (board.get(i, j).fieldType == BoardFieldType.FIRE)
+            uiTile = fireTile;
+          else if (board.get(i, j).fieldType == BoardFieldType.WATER)
+            uiTile = waterTile;
+          else if (board.get(i, j).fieldType == BoardFieldType.AIR)
+            uiTile = airTile;
+        } else
+          uiTile = groundTile;
+
+        drawImage(canvas, uiTile, Offset(i * cellSize, j * cellSize), msize);
       }
     }
 

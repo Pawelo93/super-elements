@@ -52,7 +52,7 @@ class _BoardViewState extends State<BoardView> {
         if(x > 3 || y > 3)
           return;
 //        print('click on board game stat: ${gamePresenter.gameState}');
-        print('click x $x y $y');
+//        print('click x $x y $y');
         gamePresenter.changeState(x, y);
       },
       child: CustomPaint(

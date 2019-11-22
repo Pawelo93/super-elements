@@ -12,7 +12,7 @@ class ElementsChooser extends StatelessWidget {
     final ElementChooserBloc bloc = BlocProvider.of<ElementChooserBloc>(context);
     return BlocBuilder<ElementChooserBloc, ElementChooserState>(
       builder: (context, ElementChooserState state) {
-        print('state $state');
+//        print('state $state');
         if (state is Selected) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

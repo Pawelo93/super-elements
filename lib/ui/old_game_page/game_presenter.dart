@@ -28,7 +28,6 @@ class GamePresenter {
 
       // check if next round
 
-      print('Board is full ${board.isFull()}');
       _checkIfWin();
 
 //      if (gameState == GameState.GAME && !board.isFull()) _computerMove();
@@ -41,7 +40,6 @@ class GamePresenter {
     round = 1;
     winners.clear();
 
-    print('reset done!');
     _updateBoard();
   }
 

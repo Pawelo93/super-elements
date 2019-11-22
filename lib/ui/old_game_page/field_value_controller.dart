@@ -31,7 +31,7 @@ class FieldValueController {
     values[BoardFieldType.AIR] = airValue;
     values[BoardFieldType.GROUND] = 4;
 
-    print('Fire: ${base}, water: $waterValue, air: $airValue');
+//    print('Fire: ${base}, water: $waterValue, air: $airValue');
   }
 
   int getValue(BoardFieldType type) {

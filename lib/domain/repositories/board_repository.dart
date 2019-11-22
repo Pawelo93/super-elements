@@ -6,4 +6,6 @@ abstract class BoardRepository {
   GameBoard add(CellItem cellItem);
 
   GameBoard get();
+
+  void clear();
 }

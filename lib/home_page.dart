@@ -55,6 +55,9 @@ class _HomePageState extends State<HomePage> {
                       'comp.png',
                       'ground.png',
                       'player.png',
+                      'fire_tile.png',
+                      'water_tile.png',
+                      'air_tile.png',
                     ]),
                     builder: (context, data) {
                       if (data.hasData) {

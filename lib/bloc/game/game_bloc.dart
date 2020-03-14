@@ -2,21 +2,36 @@ import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
 import 'package:color_game/bloc/round_counter/round_counter_bloc.dart';
 import 'package:color_game/domain/repositories/board_repository.dart';
 
-import 'bloc/board/board_bloc.dart';
-import 'bloc/board/board_event.dart';
-import 'bloc/round_counter/round_counter_event.dart';
-import 'bloc/round_counter/round_counter_state.dart';
+import '../board/board_bloc.dart';
+import '../board/board_event.dart';
+import '../round_counter/round_counter_event.dart';
+import '../round_counter/round_counter_state.dart';
+import 'package:bloc/bloc.dart';
 
-class GameManager {
+import 'game_event.dart';
+import 'game_state.dart';
+
+class GameBloc extends Bloc<GameEvent, GameState> {
   final BoardBloc boardBloc;
   final RoundCounterBloc roundCounterBloc;
   final ElementChooserBloc elementChooserBloc;
   final BoardRepository boardRepository;
 
-  GameManager(this.boardBloc, this.roundCounterBloc, this.elementChooserBloc,
+  GameBloc(this.boardBloc, this.roundCounterBloc, this.elementChooserBloc,
       this.boardRepository);
 
-  void setupGame() {
+  @override
+  GameState get initialState => GameNotStarted();
+
+  @override
+  Stream<GameState> mapEventToState(GameEvent event) async* {
+    if(event is NewGame) {
+      _setupGame();
+      yield GameStarted();
+    }
+  }
+
+  void _setupGame() {
     boardRepository.clear();
     boardBloc.add(StartGame(isPlayerStaring: true));
     roundCounterBloc.add(Setup(3));
@@ -42,4 +57,5 @@ class GameManager {
     roundCounterBloc.add(NextRound(newRound));
     boardBloc.add(StartGame(isPlayerStaring: true));
   }
+
 }

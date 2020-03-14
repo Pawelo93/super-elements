@@ -6,7 +6,7 @@ import 'package:color_game/bloc/board/board_state.dart';
 import 'package:color_game/bloc/elements_chooser/elements_chooser_bloc.dart';
 import 'package:color_game/bloc/elements_chooser/elements_chooser_state.dart';
 import 'package:color_game/domain/mapper/element_chooser_position_to_field_type_mapper.dart';
-import 'package:color_game/game_manager.dart';
+import 'package:color_game/bloc/game/game_bloc.dart';
 import 'package:color_game/ui/old_game_page/board.dart';
 import 'package:color_game/ui/old_game_page/board_painter.dart';
 import 'package:color_game/ui/old_game_page/field_value_controller.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BoardView extends StatefulWidget {
-  final GameManager gameManager;
+  final GameBloc gameManager;
   final Map<String, ui.Image> images;
 
   BoardView(this.gameManager, this.images);
@@ -27,7 +27,7 @@ class _BoardViewState extends State<BoardView> {
   final ElementChooserPositionToFieldTypeMapper
       elementChooserPositionToFieldTypeMapper =
       ElementChooserPositionToFieldTypeMapper();
-  final GameManager gameManager;
+  final GameBloc gameManager;
   final Map<String, ui.Image> images;
   FieldValueController fieldValueController = FieldValueController();
 
